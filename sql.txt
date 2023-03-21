@@ -1,0 +1,122 @@
+
+1.	Создать колонку finance REAL, заполнить значение банковских счетов актёров. 
+=========
+alter table actors add COLUMN finance
+UPDATE ACTORS set finance = 1000000 where id = 1
+UPDATE ACTORS set finance = 1895000 where id = 3;
+UPDATE ACTORS set finance = 1300000 where id = 4;
+UPDATE ACTORS set finance = 1110000 where id = 5;
+UPDATE ACTORS set finance = 1105000 where id = 6;
+UPDATE ACTORS set finance = 1100800 where id = 7;
+UPDATE ACTORS set finance = 2100000 where id = 8;
+UPDATE ACTORS set finance = 1188000 where id = 9;
+UPDATE ACTORS set finance = 3257700 where id = 10;
+UPDATE ACTORS set finance = 4500000 where id = 11;
+UPDATE ACTORS set finance = 2100000 where id = 12;
+UPDATE ACTORS set finance = 1500000 where id = 13;
+=========
+2.	Переименовать колонку finance в finance_actors. Добавить колонку city, где проживают актёры в данный момент и внести все изменения в таблицу.
+3.	==========
+ALTER TABLE actors RENAME COLUMN finance TO finance_actors;
+==========
+4.	 Добавить несколько актёров мужского и женского пола, которые снимались в фильмах, которые мы написали. Добавить ещё несколько известных актёров и фильмов с их участием.
+==========
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Leonardo', 'DiCaprio',48, 'm', 'Titanic', 7.9,1997, 4520000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Matthew', 'Damon',52, 'm', 'Interstellar', 8.6,2014, 3525000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Julia', 'Roberts',55, 'f', 'Oceans eleven', 8.1,2001, 6525000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Matthew', 'McConaughey',53, 'm', 'Interstellar', 8.6,2014, 9855000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Cameron', 'Diaz',50, 'f', 'The holiday', 7.8,2006, 525200);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Jennifer', 'Aniston',54, 'f', 'The Bounty Hunter', 6.7,2010, 4525000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('George', 'Clooney',61, 'm', 'Ticket to paradise', 6.4 ,2022, 13525000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Julia', 'Roberts',55, 'f', 'Ticket to paradise',  6.4 ,2022, 6525000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('James', 'Carrey',61, 'm', 'The Truman Show', 8.3,1998, 7225000);
+
+INSERT INTO ACTORS (name,SURNAME,age,sex,movie,MOVIE_RAITING,release_year, finance_actors) 
+VALUES ('Uma', 'Thurman',52, 'f', 'Pulp Fiction', 8.6,1994, 3250800);
+==============
+5.	Вывести всех актёров которые снимались в период с 1990 по 2000 год. Актёры должны быть выведены только 1 раз.
+==============
+select DISTINCT name, surname from ACTORS
+where release_year BETWEEN 1990 and 2000
+Tom	Crouse
+Brad	Pit
+Kate	Winslet
+Harrison	Fort
+Leonardo	DiCaprio
+James	Carrey
+Uma	Thurman
+
+6.	Вывести все фильмы в которых приняли участие 2 и более актёра из нашей базы данных. Вывод организовать в порядке возрастания фамилий!
+========
+SELECT MOVIE, count(name) as 'количество актеров'
+from actors
+group by MOVIE
+HAVING count (*) > 1
+order by SURNAME ASC
+=========
+
+7.	Вывести количество актёров мужского пола, которые есть в таблице которые старше 55 лет.
+=========
+select  count (DISTINCT SURNAME)from ACTORS
+ where sex = 'm' and age >55;
+==========
+
+8.	Вывести всех актёров которые приняли участие в 2-х и более фильмах, которые есть в бд и которые имеют на своём счету 10000000$.
+===========
+SELECT name,surname, count(movie) as 'количество фильмов'
+from actors
+group by surname
+HAVING count (*) > 1;
+============
+
+9.	Вывести общую сумму всех гонораров актёров в фильмах снятых в период с 1995 по 2005 год.
+
+===========
+SELECT  sum (finance_actors) from ACTORS
+WHERE release_year BETWEEN 1995 and 2005
+===========
+
+10.	Вывести фильмы и имена и фамилии актёров, которым на момент выпуска фильма в прокат было меньше 35 лет.
+=========
+SELECT  name, surname, age, release_year,  2023 - AGE as 'year',  release_year - (2023 - AGE) as 'newyear'  from actors
+where release_year - (2023 - AGE) <35;
+name|   surname  |      age| release_year|   year|      newyear
+Tom	Crouse	        57	1996	    1966	30
+Tom	Crouse	        57	2000	    1966	34
+Arnold	Schwarzeneger	75	1982	    1948	34
+Ann	Hathaway	40	2012	    1983	29
+Ann	Hathaway	40	2014	    1983	31
+Anjelina Jolie	        47	2001	    1976	25
+Kate	Winslet	        47	1998	    1976	22
+Kate	Winslet	        47	2006	    1976	30
+Leonardo DiCaprio	48	1997	    1975	22
+Julia	Roberts	        55	2001	    1968	33
+Cameron	Diaz	        50	2006	    1973	33
+Uma	Thurman	        52	1994	    1971	23
+
+11.	Вывести все фильмы название которых состоит из 2 слов. Использовать регулярные выражения.
+12.	Вывести  фильмы и общие выплаты актёрам. В порядке убывания общей суммы гонораров. Вывести первые 5 фильмов.
+=======
+SELECT MOVIE, sum (finance_actors) as 'сумма гонорара за фильм'
+from actors
+group by MOVIE
+HAVING count (*) 
+order by sum (finance_actors) desc
+limit 5
