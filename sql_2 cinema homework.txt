@@ -1,0 +1,65 @@
+1.	Добавить новое поле finance INTEGER в таблицу bank_accounts значение задать NULL.
+===========
+alter TABLE bank_accounts add COLUMN finance INTEGER
+===========
+2.	Вывести всех актёров, которые знакомы с 2-мя и более режиссерами.
+===========
+select actors.name, actors.surname, count (directors.surname) as "количество режисcеров" from directors
+inner join movies
+on directors.director_id = movies.director_id
+inner join actors_movies
+USING (movie_id)
+inner JOIN actors
+using (actor_id)
+GROUP by actors.surname
+HAVING "количество режисcеров" >= 2
+=============
+3.	Вывести первых 10  режиссёров, которые сняли высокобюджетные фильмы. Режиссёры не должны повторяться.
+===========
+SELECT directors.name, directors.surname, sum ( movies.budjet) as 'Бюджет'
+from movies
+inner join directors
+on directors.director_id = movies.director_id
+GROUP by directors.surname
+order by sum ( movies.budjet) DESC
+limit 10
+===========
+
+5.	Вывести все фильмы, а так же всех актёров кассовые сборы которых превысили 150000000.
+===========
+SELECT actors.name, actors.surname, movies.name_movie, sum (movies.budjet) as 'summa'from actors
+inner join actors_movies
+USING (actor_id)
+inner join movies
+USING(movie_id)
+where 'summa' > 150000000;
+===========
+
+6.	Вывести всех режиссёров которые снимали фильмы до 2000 года.
+===========
+SELECT directors.name, directors.surname, movies.release from movies
+inner join directors
+on directors.director_id = movies.director_id
+where movies.release < 2000
+===========
+
+8.	Добавить колонку rating к фильмам. Задать значения рейтинга фильмов. 
+===========
+alter table movies add COLUMN rating
+update movies set rating = 8.5
+where movie_id = 2;
+update movies set rating = 8.9
+where movie_id = 3;
+===========
+9.	Вывести режиссёров и фильмы с самым низким рейтингом до 2000 года
+===========
+SELECT directors.name, directors.surname,movies.name_movie, min (movies.rating),movies.release from movies
+inner join directors
+on directors.director_id = movies.director_id
+where movies.release < 2000
+
+Michael	Bay	Bad boys 1	6.5	1995
+===========
+
+
+

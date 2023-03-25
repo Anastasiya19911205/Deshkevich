@@ -62,9 +62,10 @@ Harrison	Fort
 Leonardo	DiCaprio
 James	Carrey
 Uma	Thurman
+============
 
 6.	Вывести все фильмы в которых приняли участие 2 и более актёра из нашей базы данных. Вывод организовать в порядке возрастания фамилий!
-========
+===========
 SELECT MOVIE, count(name) as 'количество актеров'
 from actors
 group by MOVIE
